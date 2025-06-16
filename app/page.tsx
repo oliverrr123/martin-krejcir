@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 import {
   CheckCircle,
   Clock,
@@ -56,7 +57,7 @@ export default function SalesFunnel() {
             const player = {
               element: iframe,
               postMessage: (action: string, value: any) => {
-                const message = { method: action }
+                const message: { method: string; value?: any } = { method: action }
                 if (value !== undefined) {
                   message.value = value
                 }
@@ -174,16 +175,36 @@ export default function SalesFunnel() {
 
   const testimonials = [
     {
-      name: "Eva",
-      company: "Majitelka e-shopu",
+      name: "Jiří Radvanský",
+      company: "vinostrada.cz",
       text: "Martin je skvělý konzultant, díky kterému jsme konečně získali jasnou vizi a směr pro naši firmu. Doporučuji všem, kdo potřebují přehled a reálné výsledky.",
       rating: 5,
+      image: "/images/vinostrada.webp",
+      imageAlt: "Vinostrada logo",
     },
     {
-      name: "Tomáš",
-      company: "Majitel výrobní firmy",
+      name: "Martin Hlavica",
+      company: "spicecream.cz",
       text: "Praktické rady, žádná zbytečná teorie. Díky konzultacím máme jasno, kam směřujeme a jak toho dosáhneme.",
       rating: 5,
+      image: "/images/spicecream.svg",
+      imageAlt: "Spice Cream logo",
+    },
+    {
+      name: "Hlas je Tvoje vizitka",
+      company: "hlasjetvojevizitka.cz",
+      text: "Martin je skutečně kvalitní volba. Je znát, že o problematice živnostníků toho ví hodně a flexibilně reaguje na vaše specifické potřeby. Snaží se najít funkční mechanismy pro nastartování vašeho úspěchu.",
+      rating: 5,
+      image: "/images/hlasjetvojevizitka.jpeg",
+      imageAlt: "Hlas je Tvoje vizitka",
+    },
+    {
+      name: "Jan Jurásek",
+      company: "mostak.cz",
+      text: "Spolupráce s Martinem byla přesně to, co jsem potřeboval. Chyběl mi jasný směr a detailní plán. Martin mi pomohl dát všemu strukturu a vyladit to do posledního puntíku. Má opravdu velký přehled a zkušenost.",
+      rating: 5,
+      image: "/images/mostak.png",
+      imageAlt: "Mošťák logo",
     },
   ]
 
@@ -254,8 +275,10 @@ export default function SalesFunnel() {
                 size="lg"
                 className="text-lg px-8 py-4 rounded-full border-2 border-[#0064D2] text-[#0064D2] hover:bg-[#0064D2] hover:text-white transition-all duration-300 epilogue-medium hover:scale-105 transform"
               >
-                <Phone className="mr-2 h-5 w-5" />
-                Zavolat zdarma
+                <a href="tel:+420776025378" className="flex items-center">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Zavolat zdarma
+                </a>
               </Button>
             </div>
 
@@ -352,7 +375,7 @@ export default function SalesFunnel() {
       </section>
 
       {/* Problems Section */}
-      <section id="problems" className="py-20 bg-gray-50">
+      <section id="problemy" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl lg:text-5xl epilogue-bold mb-6 text-gray-900">Potýkáte se s těmito problémy?</h2>
@@ -381,7 +404,7 @@ export default function SalesFunnel() {
       </section>
 
       {/* Solution Section */}
-      <section id="solution" className="py-20 bg-white">
+      <section id="reseni" className="py-20 bg-white">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="scroll-reveal animate-slide-in-left">
@@ -423,7 +446,7 @@ export default function SalesFunnel() {
 
               <Button
                 size="lg"
-                className="bg-[#0064D2] hover:bg-[#0064D2] text-white rounded-full px-8 py-4 epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group animate-scale-in animate-delay-400"
+                className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center">
                   Rezervovat konzultace
@@ -435,7 +458,7 @@ export default function SalesFunnel() {
 
             <div className="relative scroll-reveal animate-slide-in-right">
               <img
-                src="/placeholder.svg?height=600&width=500"
+                src="/images/martin-krejcir.png"
                 alt="Martin Krejčíř - Business konzultant"
                 className="rounded-3xl shadow-2xl"
               />
@@ -457,7 +480,7 @@ export default function SalesFunnel() {
       </section>
 
       {/* Process Section */}
-      <section id="process" className="py-20 bg-gray-50">
+      <section id="proces" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl lg:text-5xl epilogue-bold mb-6 text-gray-900">Jak konzultace probíhají</h2>
@@ -499,28 +522,38 @@ export default function SalesFunnel() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-white">
+      <section id="reference" className="py-20 bg-white">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl lg:text-5xl epilogue-bold mb-6 text-gray-900">Co říkají klienti</h2>
             <p className="text-xl text-gray-600 epilogue-regular">Reálné výsledky od skutečných podnikatelů</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
               <Card
                 key={index}
                 className={`p-8 rounded-2xl border-0 shadow-sm card-hover scroll-reveal animate-delay-${(index + 1) * 200}`}
               >
                 <CardContent className="space-y-4">
-                  <div className="flex gap-1">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="h-5 w-5 fill-yellow-400 text-yellow-400 animate-scale-in"
-                        style={{ animationDelay: `${i * 0.1}s` }}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 relative flex-shrink-0">
+                      <Image
+                        src={testimonial.image || "/placeholder.svg"}
+                        alt={testimonial.imageAlt}
+                        fill
+                        className="object-contain rounded-lg"
                       />
-                    ))}
+                    </div>
+                    <div className="flex gap-1">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-5 w-5 fill-yellow-400 text-yellow-400 animate-scale-in"
+                          style={{ animationDelay: `${i * 0.1}s` }}
+                        />
+                      ))}
+                    </div>
                   </div>
                   <p className="text-gray-700 italic epilogue-regular">"{testimonial.text}"</p>
                   <div>
@@ -572,7 +605,7 @@ export default function SalesFunnel() {
       {/* CTA Section */}
       <section
         className="py-20 relative text-white bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url(/images/mk-socky-bg.png)" }}
+        style={{ backgroundImage: "url(/images/mk-socky-bg-new.png)" }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10">
@@ -682,7 +715,7 @@ export default function SalesFunnel() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full bg-[#0064D2] hover:bg-[#0064D2] rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group animate-scale-in animate-delay-600"
+                      className="w-full bg-[#0064D2] hover:bg-[#0064D2] text-lg rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
                     >
                       <span className="relative z-10 flex items-center justify-center">
                         Objednat za 15.000 Kč
@@ -727,11 +760,21 @@ export default function SalesFunnel() {
               <div className="space-y-2 text-gray-400">
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4" />
-                  <span className="epilogue-regular">napis@martinkrejcir.cz</span>
+                  <a 
+                    href="mailto:napis@martinkrejcir.cz"
+                    className="epilogue-regular hover:text-[#0064D2] transition-colors"
+                  >
+                    napis@martinkrejcir.cz
+                  </a>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4" />
-                  <span className="epilogue-regular">+420 776 025 378</span>
+                  <a 
+                    href="tel:+420776025378" 
+                    className="epilogue-regular hover:text-[#0064D2] transition-colors"
+                  >
+                    +420 776 025 378
+                  </a>
                 </div>
               </div>
             </div>

@@ -38,29 +38,29 @@ export function Header() {
           {/* Navigation - Hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8">
             <a
-              href="#problems"
-              onClick={(e) => scrollToSection(e, "problems")}
+              href="#problemy"
+              onClick={(e) => scrollToSection(e, "problemy")}
               className="text-gray-700 hover:text-[#0064D2] transition-colors epilogue-medium cursor-pointer"
             >
               Problémy
             </a>
             <a
-              href="#solution"
-              onClick={(e) => scrollToSection(e, "solution")}
+              href="#reseni"
+              onClick={(e) => scrollToSection(e, "reseni")}
               className="text-gray-700 hover:text-[#0064D2] transition-colors epilogue-medium cursor-pointer"
             >
               Řešení
             </a>
             <a
-              href="#process"
-              onClick={(e) => scrollToSection(e, "process")}
+              href="#proces"
+              onClick={(e) => scrollToSection(e, "proces")}
               className="text-gray-700 hover:text-[#0064D2] transition-colors epilogue-medium cursor-pointer"
             >
               Proces
             </a>
             <a
-              href="#testimonials"
-              onClick={(e) => scrollToSection(e, "testimonials")}
+              href="#reference"
+              onClick={(e) => scrollToSection(e, "reference")}
               className="text-gray-700 hover:text-[#0064D2] transition-colors epilogue-medium cursor-pointer"
             >
               Reference
@@ -79,10 +79,10 @@ export function Header() {
             <Button
               variant="outline"
               size="sm"
-              className="hidden sm:flex items-center gap-2 border-[#0064D2] text-[#0064D2] hover:bg-[#0064D2] hover:text-white transition-all duration-300 rounded-full epilogue-medium"
+              className="hidden sm:flex items-center gap-2 border-[#0064D2] text-[#0064D2] hover:bg-[#0064D2] hover:text-white transition-all duration-300 rounded-full epilogue-medium hover:scale-105 transform"
             >
               <Phone className="h-4 w-4" />
-              <span className="hidden lg:inline">+420 776 025 378</span>
+              <a className="hidden lg:inline" href="tel:+420776025378">+420 776 025 378</a>
               <span className="lg:hidden">Zavolat</span>
             </Button>
             <Button
