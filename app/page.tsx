@@ -296,7 +296,7 @@ export default function SalesFunnel() {
                   if (element) {
                     const headerHeight = 64; // Height of the fixed header
                     const additionalOffset = 164; // Additional offset to scroll higher
-                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
                     const offsetPosition = elementPosition - headerHeight - additionalOffset;
 
                     window.scrollTo({
@@ -489,6 +489,20 @@ export default function SalesFunnel() {
               <Button
                 size="lg"
                 className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
+                onClick={() => {
+                  const element = document.getElementById('objednavkovy-formular');
+                  if (element) {
+                    const headerHeight = 64; // Height of the fixed header
+                    const additionalOffset = 164; // Additional offset to scroll higher
+                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                    const offsetPosition = elementPosition - headerHeight - additionalOffset;
+
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth',
+                    });
+                  }
+                }}
               >
                 <span className="relative z-10 flex items-center">
                   Rezervovat konzultace
