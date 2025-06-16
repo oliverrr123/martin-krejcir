@@ -24,6 +24,7 @@ import {
   Volume2,
 } from "lucide-react"
 import { Header } from "@/components/header"
+import { getStripe } from '@/utils/stripe'
 
 export default function SalesFunnel() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -151,7 +152,7 @@ export default function SalesFunnel() {
       number: "01",
       title: "Analýza situace",
       description:
-        "Detailně se podíváme na aktuální stav vašeho podnikání. Najdeme silné i slabé stránky a přesně definujeme, co je potřeba vyřešit.",
+        "Detailně se podíváme na aktuální stav Vašeho podnikání. Najdeme silné i slabé stránky a přesně definujeme, co je potřeba vyřešit.",
     },
     {
       number: "02",
@@ -193,7 +194,7 @@ export default function SalesFunnel() {
     {
       name: "Hlas je Tvoje vizitka",
       company: "hlasjetvojevizitka.cz",
-      text: "Martin je skutečně kvalitní volba. Je znát, že o problematice živnostníků toho ví hodně a flexibilně reaguje na vaše specifické potřeby. Snaží se najít funkční mechanismy pro nastartování vašeho úspěchu.",
+      text: "Martin je skutečně kvalitní volba. Je znát, že o problematice živnostníků toho ví hodně a flexibilně reaguje na Vaše specifické potřeby. Snaží se najít funkční mechanismy pro nastartování Vašeho úspěchu.",
       rating: 5,
       image: "/images/hlasjetvojevizitka.jpeg",
       imageAlt: "Hlas je Tvoje vizitka",
@@ -230,13 +231,40 @@ export default function SalesFunnel() {
     {
       question: "Co se stane, když se nám nepodaří dořešit mou situaci?",
       answer:
-        "Samozřejmě vás nenechám odejít s nevyřešenou situaci. Můžeme celý proces natáhnout o jednu či dvě konzultace zdarma. Vyřešení problému je pro mě klíčové.",
+        "Samozřejmě Vás nenechám odejít s nevyřešenou situaci. Můžeme celý proces natáhnout o jednu či dvě konzultace zdarma. Vyřešení problému je pro mě klíčové.",
     },
   ]
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
+    
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const { sessionId, error } = await response.json()
+
+      if (error) {
+        console.error('Error creating checkout session:', error)
+        return
+      }
+
+      const stripe = await getStripe()
+      const { error: stripeError } = await stripe!.redirectToCheckout({
+        sessionId,
+      })
+
+      if (stripeError) {
+        console.error('Error redirecting to checkout:', stripeError)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
   }
 
   return (
@@ -251,18 +279,32 @@ export default function SalesFunnel() {
             </Badge>
 
             <h1 className="text-4xl lg:text-6xl epilogue-bold leading-tight text-gray-900">
-              Získejte <span className="text-[#0064D2]">jasný směr</span> pro vaše podnikání za 30 dní
+              Získejte <span className="text-[#0064D2]">jasný směr</span> pro Vaše podnikání za 30 dní
             </h1>
 
             <p className="text-xl text-gray-600 leading-relaxed epilogue-regular">
-              4 individuální konzultace s Martinem Krejčířem, které vám pomohou vyřešit problémy, nastavit efektivní
-              systémy a získat konkrétní plán pro růst vašeho podnikání.
+              4 individuální konzultace s Martinem Krejčířem, které Vám pomohou vyřešit problémy, nastavit efektivní
+              systémy a získat konkrétní plán pro růst Vašeho podnikání.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
                 className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
+                onClick={() => {
+                  const element = document.getElementById('objednavkovy-formular');
+                  if (element) {
+                    const headerHeight = 64; // Height of the fixed header
+                    const additionalOffset = 164; // Additional offset to scroll higher
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerHeight - additionalOffset;
+
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth',
+                    });
+                  }
+                }}
               >
                 <span className="relative z-10 flex items-center">
                   Chci konzultace za 15.000 Kč
@@ -367,7 +409,7 @@ export default function SalesFunnel() {
               </div>
               <div className="mt-4 text-center text-white">
                 <p className="epilogue-semibold">Martin Krejčíř vysvětluje</p>
-                <p className="text-sm opacity-90 epilogue-regular">Jak vám pomohu vyřešit problémy vašeho podnikání</p>
+                <p className="text-sm opacity-90 epilogue-regular">Jak Vám pomohu vyřešit problémy Vašeho podnikání</p>
               </div>
             </div>
           </div>
@@ -485,7 +527,7 @@ export default function SalesFunnel() {
           <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-3xl lg:text-5xl epilogue-bold mb-6 text-gray-900">Jak konzultace probíhají</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto epilogue-regular">
-              Strukturovaný proces, který vás krok za krokem dovede k jasným výsledkům
+              Strukturovaný proces, který Vás krok za krokem dovede k jasným výsledkům
             </p>
           </div>
 
@@ -638,7 +680,7 @@ export default function SalesFunnel() {
 
                 <div className="text-4xl epilogue-bold mb-2 animate-scale-in animate-delay-500">15.000 Kč</div>
                 <div className="text-lg opacity-75 epilogue-regular animate-fade-in animate-delay-600">
-                  Jednorázová investice do vašeho úspěchu
+                  Jednorázová investice do Vašeho úspěchu
                 </div>
               </div>
 
@@ -646,7 +688,7 @@ export default function SalesFunnel() {
                 <CardContent>
                   <h3 className="text-2xl epilogue-bold text-gray-900 mb-6">Rezervujte si své místo</h3>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form id="objednavkovy-formular" onSubmit={handleSubmit} className="space-y-4">
                     <div className="form-field animate-slide-up animate-delay-100">
                       <Label htmlFor="name" className="text-gray-700 epilogue-medium">
                         Jméno a příjmení *
@@ -656,7 +698,7 @@ export default function SalesFunnel() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
-                        className="rounded-xl border-gray-300 epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
                       />
                     </div>
 
@@ -670,7 +712,7 @@ export default function SalesFunnel() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
-                        className="rounded-xl border-gray-300 epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
                       />
                     </div>
 
@@ -683,7 +725,7 @@ export default function SalesFunnel() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
-                        className="rounded-xl border-gray-300 epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
                       />
                     </div>
 
@@ -695,20 +737,20 @@ export default function SalesFunnel() {
                         id="company"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="rounded-xl border-gray-300 epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
                       />
                     </div>
 
                     <div className="form-field animate-slide-up animate-delay-500">
                       <Label htmlFor="message" className="text-gray-700 epilogue-medium">
-                        Stručně popište váš hlavní problém
+                        Stručně popište Váš hlavní problém
                       </Label>
                       <Textarea
                         id="message"
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         rows={3}
-                        className="rounded-xl border-gray-300 epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
                       />
                     </div>
 
@@ -782,7 +824,7 @@ export default function SalesFunnel() {
             <div className="animate-slide-up animate-delay-300">
               <h3 className="text-xl epilogue-bold mb-4">Záruka kvality</h3>
               <p className="text-gray-400 epilogue-regular">
-                100% záruka spokojenosti. Pokud nebudete spokojeni, vrátíme vám peníze bez otázek.
+                100% záruka spokojenosti. Pokud nebudete spokojeni, vrátíme Vám peníze bez otázek.
               </p>
             </div>
           </div>

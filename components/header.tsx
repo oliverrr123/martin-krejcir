@@ -88,6 +88,20 @@ export function Header() {
             <Button
               size="sm"
               className="bg-[#0064D2] hover:bg-[#0064D2] text-white rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
+              onClick={() => {
+                const element = document.getElementById('objednavkovy-formular');
+                if (element) {
+                  const headerHeight = 64; // Height of the fixed header
+                  const additionalOffset = 164; // Additional offset to scroll higher
+                  const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                  const offsetPosition = elementPosition - headerHeight - additionalOffset;
+
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth',
+                  });
+                }
+              }}
             >
               <span className="relative z-10">Konzultace</span>
               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
