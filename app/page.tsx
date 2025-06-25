@@ -665,8 +665,8 @@ export default function SalesFunnel() {
       >
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10">
-          <div className="container mx-auto px-4 max-w-7xl">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="scroll-reveal animate-slide-in-left">
                 <h2 className="text-3xl lg:text-5xl epilogue-bold mb-6">Začněte podnikat efektivně ještě dnes</h2>
                 <p className="text-xl mb-8 opacity-90 epilogue-regular">
@@ -675,19 +675,19 @@ export default function SalesFunnel() {
 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center gap-3 animate-slide-up animate-delay-100">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
                     <span className="epilogue-regular">4 individuální konzultace (60-90 min každá)</span>
                   </div>
                   <div className="flex items-center gap-3 animate-slide-up animate-delay-200">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
                     <span className="epilogue-regular">Jasný plán a konkrétní kroky</span>
                   </div>
                   <div className="flex items-center gap-3 animate-slide-up animate-delay-300">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
                     <span className="epilogue-regular">Záruka spokojenosti</span>
                   </div>
                   <div className="flex items-center gap-3 animate-slide-up animate-delay-400">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
+                    <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0" />
                     <span className="epilogue-regular">Možnost prodloužení zdarma</span>
                   </div>
                 </div>
@@ -698,7 +698,7 @@ export default function SalesFunnel() {
                 </div>
               </div>
 
-              <Card className="p-8 rounded-2xl scroll-reveal animate-slide-in-right bg-white">
+              <Card className="p-4 sm:p-8 rounded-2xl scroll-reveal animate-slide-in-right bg-white w-full">
                 <CardContent>
                   <h3 className="text-2xl epilogue-bold text-gray-900 mb-6">Rezervujte si své místo</h3>
 
@@ -712,7 +712,7 @@ export default function SalesFunnel() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
                       />
                     </div>
 
@@ -726,7 +726,7 @@ export default function SalesFunnel() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
                       />
                     </div>
 
@@ -739,7 +739,7 @@ export default function SalesFunnel() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
                       />
                     </div>
 
@@ -751,7 +751,7 @@ export default function SalesFunnel() {
                         id="company"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
                       />
                     </div>
 
@@ -764,7 +764,7 @@ export default function SalesFunnel() {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         rows={3}
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300"
+                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
                       />
                     </div>
 

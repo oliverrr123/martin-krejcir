@@ -5,7 +5,6 @@ import "./globals.css"
 export const metadata: Metadata = {
   title: "4x Konzultace - Martin Krejčíř",
   description: "Získejte jasný směr pro vaše podnikání za 30 dní. 4 individuální konzultace s Martinem Krejčířem.",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
