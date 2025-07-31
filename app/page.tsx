@@ -22,8 +22,11 @@ import {
   Mail,
   ChevronDown,
   Volume2,
+  X,
+  Users,
 } from "lucide-react"
 import { Header } from "@/components/header"
+// import { StickyCTA } from "@/components/sticky-cta"
 import { getStripe } from '@/utils/stripe'
 
 export default function SalesFunnel() {
@@ -39,6 +42,26 @@ export default function SalesFunnel() {
   const [isMuted, setIsMuted] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
   const [videoPlayer, setVideoPlayer] = useState<any>(null)
+  const [showStickyCTA, setShowStickyCTA] = useState(false)
+
+  // Show sticky CTA after scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+      
+      // Show CTA after scrolling 30% of the page
+      if (scrollPosition > (documentHeight * 0.3) && scrollPosition < (documentHeight - windowHeight - 200)) {
+        setShowStickyCTA(true)
+      } else {
+        setShowStickyCTA(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Handle video player initialization
   useEffect(() => {
@@ -848,6 +871,25 @@ export default function SalesFunnel() {
           </div>
         </div>
       </footer>
+
+      {/* Sticky CTA */}
+      {/* <StickyCTA 
+        show={showStickyCTA}
+        onReserveClick={() => {
+          const element = document.getElementById('objednavkovy-formular');
+          if (element) {
+            const headerHeight = 64;
+            const additionalOffset = 164;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - headerHeight - additionalOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth',
+            });
+          }
+        }}
+      /> */}
     </div>
   )
 }
