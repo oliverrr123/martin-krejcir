@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
+import { FacebookPixel } from "@/components/facebook-pixel"
 
 export const metadata: Metadata = {
   title: "4x Konzultace - Martin Krejčíř",
@@ -22,7 +23,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="epilogue-font">{children}</body>
+      <body className="epilogue-font">
+        {children}
+        <FacebookPixel />
+      </body>
     </html>
   )
 }

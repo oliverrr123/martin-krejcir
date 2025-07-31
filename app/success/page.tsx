@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { trackPurchase } from '@/lib/facebook-pixel'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
@@ -19,6 +20,15 @@ function SuccessContent() {
         const { customer } = await sessionResponse.json()
         
         if (customer) {
+          // Track successful purchase
+          trackPurchase({
+            value: 15000,
+            currency: 'CZK',
+            content_ids: ['consultation_package'],
+            content_name: '4 Konzultace s Martinem Krejčířem',
+            content_category: 'Business Consultation'
+          })
+
           // Then, send the emails
           const emailResponse = await fetch('/api/send-emails', {
             method: 'POST',

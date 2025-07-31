@@ -1,10 +1,22 @@
 "use client"
 
+import { useEffect } from 'react'
 import { XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { trackEvent } from '@/lib/facebook-pixel'
 
 export default function CancelPage() {
+  useEffect(() => {
+    // Track checkout abandonment
+    trackEvent('CustomEvent', {
+      event_name: 'Checkout Abandonment',
+      content_category: 'E-commerce',
+      value: 15000,
+      currency: 'CZK'
+    })
+  }, [])
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full mx-auto p-8">

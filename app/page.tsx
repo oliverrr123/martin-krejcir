@@ -28,6 +28,7 @@ import {
 import { Header } from "@/components/header"
 // import { StickyCTA } from "@/components/sticky-cta"
 import { getStripe } from '@/utils/stripe'
+import { trackFormSubmission, trackButtonClick, trackVideoInteraction, trackScrollDepth, trackInitiateCheckout } from '@/lib/facebook-pixel'
 
 export default function SalesFunnel() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -50,6 +51,18 @@ export default function SalesFunnel() {
       const scrollPosition = window.scrollY
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight
+      
+      // Calculate scroll depth percentage
+      const scrollDepth = Math.round((scrollPosition / (documentHeight - windowHeight)) * 100)
+      
+      // Track scroll depth at key milestones
+      if (scrollDepth >= 25 && scrollDepth < 50) {
+        trackScrollDepth(25)
+      } else if (scrollDepth >= 50 && scrollDepth < 75) {
+        trackScrollDepth(50)
+      } else if (scrollDepth >= 75) {
+        trackScrollDepth(75)
+      }
       
       // Show CTA after scrolling 30% of the page
       if (scrollPosition > (documentHeight * 0.3) && scrollPosition < (documentHeight - windowHeight - 200)) {
@@ -113,14 +126,20 @@ export default function SalesFunnel() {
         videoPlayer.postMessage("play", undefined) // Ensure it's playing
         setIsMuted(false)
         setIsPaused(false)
+        // Track video unmute
+        trackVideoInteraction('unmute')
       } else {
         // Subsequent clicks: toggle play/pause
         if (isPaused) {
           videoPlayer.postMessage("play", undefined)
           setIsPaused(false)
+          // Track video play
+          trackVideoInteraction('play')
         } else {
           videoPlayer.postMessage("pause", undefined)
           setIsPaused(true)
+          // Track video pause
+          trackVideoInteraction('pause')
         }
       }
     }
@@ -261,6 +280,9 @@ export default function SalesFunnel() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
+    // Track form submission
+    trackFormSubmission(formData)
+    
     try {
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
@@ -276,6 +298,9 @@ export default function SalesFunnel() {
         console.error('Error creating checkout session:', error)
         return
       }
+
+      // Track initiate checkout
+      trackInitiateCheckout()
 
       const stripe = await getStripe()
       const { error: stripeError } = await stripe!.redirectToCheckout({
@@ -315,6 +340,9 @@ export default function SalesFunnel() {
                 size="lg"
                 className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
                 onClick={() => {
+                  // Track button click
+                  trackButtonClick('hero_cta')
+                  
                   const element = document.getElementById('objednavkovy-formular');
                   if (element) {
                     const headerHeight = 64; // Height of the fixed header
@@ -339,6 +367,7 @@ export default function SalesFunnel() {
                 variant="outline"
                 size="lg"
                 className="text-lg px-8 py-4 rounded-full border-2 border-[#0064D2] text-[#0064D2] hover:bg-[#0064D2] hover:text-white transition-all duration-300 epilogue-medium hover:scale-105 transform"
+                onClick={() => trackButtonClick('phone_call')}
               >
                 <a href="tel:+420776025378" className="flex items-center">
                   <Phone className="mr-2 h-5 w-5" />
@@ -513,6 +542,9 @@ export default function SalesFunnel() {
                 size="lg"
                 className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
                 onClick={() => {
+                  // Track button click
+                  trackButtonClick('solution_cta')
+                  
                   const element = document.getElementById('objednavkovy-formular');
                   if (element) {
                     const headerHeight = 64; // Height of the fixed header
@@ -795,6 +827,7 @@ export default function SalesFunnel() {
                       type="submit"
                       size="lg"
                       className="w-full bg-[#0064D2] hover:bg-[#0064D2] text-lg rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
+                      onClick={() => trackButtonClick('form_submit')}
                     >
                       <span className="relative z-10 flex items-center justify-center">
                         Objednat za 15.000 Kč
