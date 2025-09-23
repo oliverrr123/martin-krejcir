@@ -5,9 +5,6 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import {
@@ -27,20 +24,13 @@ import {
   Users,
 } from "lucide-react"
 import { Header } from "@/components/header"
-// import { StickyCTA } from "@/components/sticky-cta"
-import { getStripe } from '@/utils/stripe'
-import { trackFormSubmission, trackButtonClick, trackVideoInteraction, trackScrollDepth, trackInitiateCheckout } from '@/lib/facebook-pixel'
 import Link from "next/link"
+import { trackButtonClick } from '@/lib/facebook-pixel'
 
 export default function SalesFunnel() {
+  const GOOGLE_BOOKING_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1PG1QfpepV2-8_CmtxjagqQbn4AaJ_4782P78NSmq9I2mmSz1yi6KnToPdVdm7lqhPHGadAATj?gv=true'
+  
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    message: "",
-  })
   const [isVideoLoading, setIsVideoLoading] = useState(true)
   const [isMuted, setIsMuted] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
@@ -53,18 +43,6 @@ export default function SalesFunnel() {
       const scrollPosition = window.scrollY
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight
-      
-      // Calculate scroll depth percentage
-      const scrollDepth = Math.round((scrollPosition / (documentHeight - windowHeight)) * 100)
-      
-      // Track scroll depth at key milestones
-      if (scrollDepth >= 25 && scrollDepth < 50) {
-        trackScrollDepth(25)
-      } else if (scrollDepth >= 50 && scrollDepth < 75) {
-        trackScrollDepth(50)
-      } else if (scrollDepth >= 75) {
-        trackScrollDepth(75)
-      }
       
       // Show CTA after scrolling 30% of the page
       if (scrollPosition > (documentHeight * 0.3) && scrollPosition < (documentHeight - windowHeight - 200)) {
@@ -128,20 +106,14 @@ export default function SalesFunnel() {
         videoPlayer.postMessage("play", undefined) // Ensure it's playing
         setIsMuted(false)
         setIsPaused(false)
-        // Track video unmute
-        trackVideoInteraction('unmute')
       } else {
         // Subsequent clicks: toggle play/pause
         if (isPaused) {
           videoPlayer.postMessage("play", undefined)
           setIsPaused(false)
-          // Track video play
-          trackVideoInteraction('play')
         } else {
           videoPlayer.postMessage("pause", undefined)
           setIsPaused(true)
-          // Track video pause
-          trackVideoInteraction('pause')
         }
       }
     }
@@ -279,43 +251,6 @@ export default function SalesFunnel() {
     },
   ]
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    // Track form submission
-    trackFormSubmission(formData)
-    
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      const { sessionId, error } = await response.json()
-
-      if (error) {
-        console.error('Error creating checkout session:', error)
-        return
-      }
-
-      // Track initiate checkout
-      trackInitiateCheckout()
-
-      const stripe = await getStripe()
-      const { error: stripeError } = await stripe!.redirectToCheckout({
-        sessionId,
-      })
-
-      if (stripeError) {
-        console.error('Error redirecting to checkout:', stripeError)
-      }
-    } catch (error) {
-      console.error('Error:', error)
-    }
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -342,21 +277,8 @@ export default function SalesFunnel() {
                 size="lg"
                 className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
                 onClick={() => {
-                  // Track button click
-                  trackButtonClick('hero_cta')
-                  
-                  const element = document.getElementById('objednavkovy-formular');
-                  if (element) {
-                    const headerHeight = 64; // Height of the fixed header
-                    const additionalOffset = 164; // Additional offset to scroll higher
-                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-                    const offsetPosition = elementPosition - headerHeight - additionalOffset;
-
-                    window.scrollTo({
-                      top: offsetPosition,
-                      behavior: 'smooth',
-                    });
-                  }
+                  trackButtonClick('Hero CTA Button')
+                  window.open(GOOGLE_BOOKING_URL, '_blank', 'noopener,noreferrer')
                 }}
               >
                 <span className="relative z-10 flex items-center">
@@ -365,11 +287,10 @@ export default function SalesFunnel() {
                 </span>
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
               </Button>
-              {/* <Button
+              {/*               <Button
                 variant="outline"
                 size="lg"
                 className="text-lg px-8 py-4 rounded-full border-2 border-[#0064D2] text-[#0064D2] hover:bg-[#0064D2] hover:text-white transition-all duration-300 epilogue-medium hover:scale-105 transform"
-                onClick={() => trackButtonClick('phone_call')}
               >
                 <a href="tel:+420776025378" className="flex items-center">
                   <Phone className="mr-2 h-5 w-5" />
@@ -544,21 +465,8 @@ export default function SalesFunnel() {
                 size="lg"
                 className="bg-[#0064D2] hover:bg-[#0064D2] text-white text-lg px-8 py-4 rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
                 onClick={() => {
-                  // Track button click
-                  trackButtonClick('solution_cta')
-                  
-                  const element = document.getElementById('objednavkovy-formular');
-                  if (element) {
-                    const headerHeight = 64; // Height of the fixed header
-                    const additionalOffset = 164; // Additional offset to scroll higher
-                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-                    const offsetPosition = elementPosition - headerHeight - additionalOffset;
-
-                    window.scrollTo({
-                      top: offsetPosition,
-                      behavior: 'smooth',
-                    });
-                  }
+                  trackButtonClick('Solution CTA Button')
+                  window.open(GOOGLE_BOOKING_URL, '_blank', 'noopener,noreferrer')
                 }}
               >
                 <span className="relative z-10 flex items-center">
@@ -765,19 +673,21 @@ export default function SalesFunnel() {
                   </div>
 
 
-                  <div className="space-y-4">
-                    <Link target="_blank" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1PG1QfpepV2-8_CmtxjagqQbn4AaJ_4782P78NSmq9I2mmSz1yi6KnToPdVdm7lqhPHGadAATj?gv=true">
-                      <Button
-                        size="lg"
-                        className="w-full bg-[#0064D2] hover:bg-[#0064D2] text-lg rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
-                        >
-                        <span className="relative z-10 flex items-center justify-center">
-                          Rezervovat úvodní schůzku ZDARMA
-                          <ArrowRight className="ml-2 h-5 w-5" />
-                        </span>
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
-                      </Button>
-                    </Link>
+                   <div className="space-y-4">
+                     <Button
+                       size="lg"
+                       className="w-full bg-[#0064D2] hover:bg-[#0064D2] text-lg rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
+                       onClick={() => {
+                         trackButtonClick('CTA Section Booking Button')
+                         window.open(GOOGLE_BOOKING_URL, '_blank', 'noopener,noreferrer')
+                       }}
+                     >
+                       <span className="relative z-10 flex items-center justify-center">
+                         Rezervovat úvodní schůzku ZDARMA
+                         <ArrowRight className="ml-2 h-5 w-5" />
+                       </span>
+                       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
+                     </Button>
 
                     <p className="text-xs text-gray-600 text-center epilogue-regular animate-fade-in animate-delay-700">
                       Kliknutím souhlasíte se zpracováním osobních údajů

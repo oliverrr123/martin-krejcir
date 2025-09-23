@@ -7,8 +7,11 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Phone } from "lucide-react"
 import { useCallback } from "react"
+import { trackButtonClick } from '@/lib/facebook-pixel'
 
 export function Header() {
+  const GOOGLE_BOOKING_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1PG1QfpepV2-8_CmtxjagqQbn4AaJ_4782P78NSmq9I2mmSz1yi6KnToPdVdm7lqhPHGadAATj?gv=true'
+  
   const scrollToSection = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault()
     const element = document.getElementById(id)
@@ -89,18 +92,8 @@ export function Header() {
               size="sm"
               className="bg-[#0064D2] hover:bg-[#0064D2] text-white rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
               onClick={() => {
-                const element = document.getElementById('objednavkovy-formular');
-                if (element) {
-                  const headerHeight = 64; // Height of the fixed header
-                  const additionalOffset = 164; // Additional offset to scroll higher
-                  const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-                  const offsetPosition = elementPosition - headerHeight - additionalOffset;
-
-                  window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth',
-                  });
-                }
+                trackButtonClick('Header CTA Button')
+                window.open(GOOGLE_BOOKING_URL, '_blank', 'noopener,noreferrer')
               }}
             >
               <span className="relative z-10">Úvodní schůzka ZDARMA</span>
