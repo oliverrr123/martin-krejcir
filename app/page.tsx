@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -358,12 +359,12 @@ export default function SalesFunnel() {
                 }}
               >
                 <span className="relative z-10 flex items-center">
-                  Chci konzultace za 15.000 Kč
+                  Úvodní schůzka ZDARMA
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </span>
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 size="lg"
                 className="text-lg px-8 py-4 rounded-full border-2 border-[#0064D2] text-[#0064D2] hover:bg-[#0064D2] hover:text-white transition-all duration-300 epilogue-medium hover:scale-105 transform"
@@ -373,7 +374,7 @@ export default function SalesFunnel() {
                   <Phone className="mr-2 h-5 w-5" />
                   Zavolat zdarma
                 </a>
-              </Button>
+              </Button> */}
             </div>
 
             <div className="flex items-center gap-6 text-sm text-gray-500 epilogue-regular">
@@ -747,9 +748,9 @@ export default function SalesFunnel() {
                   </div>
                 </div>
 
-                <div className="text-4xl epilogue-bold mb-2 animate-scale-in animate-delay-500">15.000 Kč</div>
+                <div className="text-4xl epilogue-bold mb-2 animate-scale-in animate-delay-500">Úvodní schůzka ZDARMA</div>
                 <div className="text-lg opacity-75 epilogue-regular animate-fade-in animate-delay-600">
-                  Jednorázová investice do Vašeho úspěchu
+                  Poté 15.000 Kč za 4 konzultace
                 </div>
               </div>
 
@@ -830,7 +831,7 @@ export default function SalesFunnel() {
                       onClick={() => trackButtonClick('form_submit')}
                     >
                       <span className="relative z-10 flex items-center justify-center">
-                        Objednat za 15.000 Kč
+                        Rezervovat úvodní schůzku ZDARMA
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </span>
                       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
