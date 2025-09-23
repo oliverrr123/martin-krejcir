@@ -30,6 +30,7 @@ import { Header } from "@/components/header"
 // import { StickyCTA } from "@/components/sticky-cta"
 import { getStripe } from '@/utils/stripe'
 import { trackFormSubmission, trackButtonClick, trackVideoInteraction, trackScrollDepth, trackInitiateCheckout } from '@/lib/facebook-pixel'
+import Link from "next/link"
 
 export default function SalesFunnel() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -756,91 +757,32 @@ export default function SalesFunnel() {
 
               <Card className="p-4 sm:p-8 rounded-2xl scroll-reveal animate-slide-in-right bg-white w-full">
                 <CardContent>
-                  <h3 className="text-2xl epilogue-bold text-gray-900 mb-6">Rezervujte si své místo</h3>
+                  <h3 className="text-4xl text-center epilogue-semibold text-gray-900 mb-6">Rezervujte si své místo</h3>
 
-                  <form id="objednavkovy-formular" onSubmit={handleSubmit} className="space-y-4">
-                    <div className="form-field animate-slide-up animate-delay-100">
-                      <Label htmlFor="name" className="text-gray-700 epilogue-medium">
-                        Jméno a příjmení *
-                      </Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
-                      />
-                    </div>
+                  <div className="flex justify-center items-center">
+                    <img src="/images/calendargraphic2.png" alt="Kalendář" className="px-20 pb-10 pt-2" />
 
-                    <div className="form-field animate-slide-up animate-delay-200">
-                      <Label htmlFor="email" className="text-gray-700 epilogue-medium">
-                        E-mail *
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
-                      />
-                    </div>
+                  </div>
 
-                    <div className="form-field animate-slide-up animate-delay-300">
-                      <Label htmlFor="phone" className="text-gray-700 epilogue-medium">
-                        Telefon *
-                      </Label>
-                      <Input
-                        id="phone"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        required
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
-                      />
-                    </div>
 
-                    <div className="form-field animate-slide-up animate-delay-400">
-                      <Label htmlFor="company" className="text-gray-700 epilogue-medium">
-                        Název firmy
-                      </Label>
-                      <Input
-                        id="company"
-                        value={formData.company}
-                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
-                      />
-                    </div>
-
-                    <div className="form-field animate-slide-up animate-delay-500">
-                      <Label htmlFor="message" className="text-gray-700 epilogue-medium">
-                        Stručně popište Váš hlavní problém
-                      </Label>
-                      <Textarea
-                        id="message"
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        rows={3}
-                        className="rounded-xl border-gray-300 text-black epilogue-regular focus:border-[#0064D2] focus:ring-[#0064D2] transition-all duration-300 w-full"
-                      />
-                    </div>
-
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full bg-[#0064D2] hover:bg-[#0064D2] text-lg rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
-                      onClick={() => trackButtonClick('form_submit')}
-                    >
-                      <span className="relative z-10 flex items-center justify-center">
-                        Rezervovat úvodní schůzku ZDARMA
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </span>
-                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
-                    </Button>
+                  <div className="space-y-4">
+                    <Link target="_blank" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1PG1QfpepV2-8_CmtxjagqQbn4AaJ_4782P78NSmq9I2mmSz1yi6KnToPdVdm7lqhPHGadAATj?gv=true">
+                      <Button
+                        size="lg"
+                        className="w-full bg-[#0064D2] hover:bg-[#0064D2] text-lg rounded-full epilogue-medium transition-all duration-300 hover:scale-105 transform relative overflow-hidden group"
+                        >
+                        <span className="relative z-10 flex items-center justify-center">
+                          Rezervovat úvodní schůzku ZDARMA
+                          <ArrowRight className="ml-2 h-5 w-5" />
+                        </span>
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"></div>
+                      </Button>
+                    </Link>
 
                     <p className="text-xs text-gray-600 text-center epilogue-regular animate-fade-in animate-delay-700">
                       Kliknutím souhlasíte se zpracováním osobních údajů
                     </p>
-                  </form>
+                  </div>
                 </CardContent>
               </Card>
             </div>
