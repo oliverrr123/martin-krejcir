@@ -663,13 +663,16 @@ export default function SalesFunnel() {
                 </div>
               </div>
 
-              <Card className="p-4 sm:p-8 rounded-2xl scroll-reveal animate-slide-in-right bg-white w-full">
-                <CardContent>
-                  <h3 className="text-4xl text-center epilogue-semibold text-gray-900 mb-6">Rezervujte si své místo</h3>
+              <Card className="p-1 sm:p-2 md:p-4 lg:p-6 rounded-2xl scroll-reveal animate-slide-in-right bg-white w-full max-w-full overflow-hidden">
+                <CardContent className="p-1 sm:p-2 md:p-3">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center epilogue-semibold text-gray-900 mb-3 sm:mb-4 md:mb-6">Rezervujte si své místo</h3>
 
-                  <div className="flex justify-center items-center">
-                    <img src="/images/calendargraphic2.png" alt="Kalendář" className="px-20 pb-10 pt-2" />
-
+                  <div className="flex justify-center items-center mb-3 sm:mb-4 md:mb-6 px-1">
+                    <img 
+                      src="/images/calendargraphic2.png" 
+                      alt="Kalendář" 
+                      className="w-full max-w-[280px] sm:max-w-sm md:max-w-md h-auto" 
+                    />
                   </div>
 
 
